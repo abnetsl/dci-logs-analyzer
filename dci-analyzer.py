@@ -15,7 +15,7 @@ with open(filename, 'r') as f:
             trackingIdLength = 14
             trackingIdEnd = trackingIdStart + trackingIdLength
             trackingId = line[trackingIdStart:trackingIdEnd]
-            reqTime = datetime.strptime(line[0:12], '%H:%M:%S.%f')
+            reqTime = datetime.strptime(line[1:13], '%H:%M:%S.%f')
             destinationRequests[trackingId] = { 'reqTime': reqTime, 'resTime': None, 'delay': None }
         if '/.TUMI' in line:
             messageStart = line.index('/.TUMI')
@@ -26,7 +26,7 @@ with open(filename, 'r') as f:
             if trackingId not in destinationRequests:
                 print("Warning: Response without request. Tracking ID: " + trackingId)
                 continue
-            resTime = datetime.strptime(line[0:12], '%H:%M:%S.%f')
+            resTime = datetime.strptime(line[1:13], '%H:%M:%S.%f')
             delay = resTime - destinationRequests[trackingId]['reqTime']
             delayMs = delay.seconds * 1000 + delay.microseconds / 1000
             if delayMs > 1000:
